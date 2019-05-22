@@ -45,8 +45,9 @@ echo "Installing dependencies..."
 echo "=========================="
 apt update
 apt -y full-upgrade
-apt -y install ntfs-3g hdparm hfsutils hfsprogs exfat-fuse git
-#ntpdate -u de.pool.ntp.org 
+apt -y install ntfs-3g hdparm hfsutils hfsprogs exfat-fuse git ntpdate proftpd samba
+echo "updating date and time"
+sudo ntpdate -u de.pool.ntp.org 
 
 echo 'Step 2:' 
 echo -e '\033[5mShinobi installieren\033[0m'
@@ -140,7 +141,7 @@ read usbdiskdecision
 
 if [[ $usbdiskdecision =~ (J|j|Y|y) ]]
   then
-echo "/dev/sda1    /media/nvr   ntfs    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
+sudo echo "/dev/sda1    /media/nvr   ntfs    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
 sudo mkdir /media/nvr
 sudo mkdir /media/nvr/sample
 sudo mount -a
@@ -166,7 +167,7 @@ read cronbootdecision
 
 if [[ $cronbootdecision =~ (J|j|Y|y) ]]
   then
-echo "*/15 3 * * *   root     shutdown -r now" >> /etc/crontab
+sudo echo "*/15 3 * * *   root     shutdown -r now" >> /etc/crontab
 elif [[ $cronbootdecision =~ (n) ]]
   then
     echo 'Es wurde nichts verändert'
@@ -182,8 +183,8 @@ echo -e "\033[36mAccess Shinobi: http://`hostname -I`:8080\033[0m"
 echo -e "\033[36mAccess the Raspi-Config-UI Webmin at: http\033[42ms\033[0m\033[1;31m://`hostname -I`:10000\033[0m"
 echo -e "\033[36mwith user: pi and your password (raspberry)\033[0m"
 echo ''
-echo ''
-echo -e "\033[1;31mLoggen Sie sich bei Shinobi ein unter: http://`hostname -I`:8080\033[0m"
+echo -e "\033[1;31mLegen Sie einen neuen Benutzer an unter: http://`hostname -I`:8080/super User: admin@shinobi.video Passwort: admin\033[0m"
+echo -e "\033[1;31mLoggen Sie sich dann bei Shinobi ein unter: http://`hostname -I`:8080\033[0m"
 echo ''
 echo -e "\033[1;31mLoggen Sie sich in die Raspi-Config-UI Webmin ein: http\033[42ms\033[0m\033[1;31m://`hostname -I`:10000\033[0m"
 echo -e "\033[1;31mMit Ihrem Benutzer: pi  und Passwort: (raspberry)\033[0m"
