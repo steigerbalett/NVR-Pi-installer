@@ -118,7 +118,7 @@ read webmindecision
 if [[ $webmindecision =~ (J|j|Y|y) ]]
   then
 echo 'deb https://download.webmin.com/download/repository sarge contrib' | sudo tee /etc/apt/sources.list.d/100-webmin.list
-cd ../root
+#cd ../root
 wget http://www.webmin.com/jcameron-key.asc
 sudo apt-key add jcameron-key.asc 
 sudo apt update
