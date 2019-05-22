@@ -73,7 +73,7 @@ else
 echo "Turn off HDMI without connected Monitor"
 echo "========================"
 echo "" >> /boot/config.txt
-echo "# Turn off HDMI without connected Monitor to reduce inteference with HomematicIP Devices" >> /boot/config.txt
+echo "# Turn off HDMI without connected Monitor" >> /boot/config.txt
 echo "hdmi_blanking=1" >> /boot/config.txt
 echo "" >> /boot/config.txt
 echo "# disable HDMI audio" >> /boot/config.txt
@@ -145,9 +145,9 @@ sudo mkdir /media/nvr
 sudo mkdir /media/nvr/sample
 sudo mount -a
 sudo chmod -R 777 /media/nvr
-sed -i 's/second/USB-HDD/' /home/Shinobi/conf.json
-sed -i 's!__DIR__/videos2!/media/nvr/' /home/Shinobi/conf.json
-sed -i 's/change_this_to_something_very_random__just_anything_other_than_this/Change-this-please-to_something_very_random__just_anything_other_than_this/' /home/Shinobi/conf.json
+sudo sed -i 's/second/USB-HDD/' /home/Shinobi/conf.json
+sudo sed -i 's!__DIR__/videos2!/media/nvr!' /home/Shinobi/conf.json
+sudo sed -i 's/change_this_to_something_very_random__just_anything_other_than_this/Change-this-please-to_something_very_random__just_anything_other_than_this/' /home/Shinobi/conf.json
 elif [[ $usbdiskdecision =~ (n) ]]
   then
     echo 'Es wurde nichts verändert'
