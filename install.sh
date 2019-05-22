@@ -46,7 +46,7 @@ echo "=========================="
 apt update
 apt -y full-upgrade
 apt -y install ntfs-3g hdparm hfsutils hfsprogs exfat-fuse git
-ntpdate -u de.pool.ntp.org 
+#ntpdate -u de.pool.ntp.org 
 
 echo 'Step 2:' 
 echo -e '\033[5mShinobi installieren\033[0m'
