@@ -95,7 +95,7 @@ echo "dtparam=watchdog=on" >> /boot/config.txt
 
 echo "Enable LOG Rotation after 20 days"
 sudo apt install logrotate -y
-sudo bash -c 'cat &gt;&gt; /etc/logrotate.d/unifi &lt;&lt; EOF
+sudo bash -c 'cat >> /etc/logrotate.d/unifi << EOF
 /var/log/unifi/*.log {
     rotate 20
     daily
