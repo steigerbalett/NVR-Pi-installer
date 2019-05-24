@@ -94,20 +94,6 @@ echo "" >> /boot/config.txt
 echo "# activating the hardware watchdog" >> /boot/config.txt
 echo "dtparam=watchdog=on" >> /boot/config.txt
 
-echo "Enable LOG Rotation after 20 days"
-sudo apt install logrotate -y
-sudo bash -c 'cat >> /etc/logrotate.d/unifi << EOF
-/var/log/unifi/*.log {
-    rotate 20
-    daily
-    missingok
-    notifempty
-    compress
-    delaycompress
-    copytruncate
-}
-EOF'
-
 # enable additional admin programs
 echo 'Step 4: Optionales Admin Programm'
 echo 'Installation of optional Raspberry-Config UI: Webmin (recommend)'
