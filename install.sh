@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Error out if anything fails.
-set -e
+#set -e
 
 #License
 clear
