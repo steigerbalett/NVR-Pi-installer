@@ -43,6 +43,7 @@ fi
 echo 'Step 1:' 
 echo "Installing dependencies..."
 echo "=========================="
+echo ''
 apt update
 apt -y full-upgrade
 apt -y install ntfs-3g hdparm hfsutils hfsprogs exfat-fuse git ntpdate proftpd samba
@@ -52,12 +53,14 @@ sudo ntpdate -u de.pool.ntp.org
 echo 'Step 2:' 
 echo -e '\033[5mShinobi installieren\033[0m'
 echo "=========================="
+echo ''
 cd /tmp
 bash <(curl -s https://gitlab.com/Shinobi-Systems/Shinobi-Installer/raw/master/shinobi-install.sh)
 
 echo 'Step 3:'
 echo "Tweaks"
 echo "========================"
+echo ''
 if grep gpu_mem /boot/config.txt; then
   echo "Not changing GPU memory since it's already set"
 else
@@ -73,6 +76,7 @@ if grep hdmi_blanking=1 /boot/config.txt; then
 else
 echo "Turn off HDMI without connected Monitor"
 echo "========================"
+echo ''
 echo "" >> /boot/config.txt
 echo "# Turn off HDMI without connected Monitor" >> /boot/config.txt
 echo "hdmi_blanking=1" >> /boot/config.txt
@@ -90,6 +94,7 @@ echo "disable_overscan=1" >> /boot/config.txt
 
 echo "Enable Hardware watchdog"
 echo "========================"
+echo ''
 echo "" >> /boot/config.txt
 echo "# activating the hardware watchdog" >> /boot/config.txt
 echo "dtparam=watchdog=on" >> /boot/config.txt
@@ -97,7 +102,9 @@ echo "dtparam=watchdog=on" >> /boot/config.txt
 # enable additional admin programs
 echo 'Step 4: Optionales Admin Programm'
 echo 'Installation of optional Raspberry-Config UI: Webmin (recommend)'
+echo ''
 echo -n -e '\033[7mMöchten Sie Webmin installieren (empfohlen) [J/n]\033[0m'
+echo ''
 echo -n -e '\033[36mDo you want to install Webmin [Y/n]\033[0m'
 read webmindecision
 
@@ -121,7 +128,9 @@ fi
 echo 'Step 5:'
 echo 'USB-Festplatte automatisch mounten'
 echo 'Enable automatic mount of an USB-HDD (recommend)'
+echo ''
 echo -n -e '\033[7mMöchten Sie; dass eine per USB angeschlossene Festplatte automatisch eingebunden wird? (empfohlen) [J/n]\033[0m'
+echo ''
 echo -n -e '\033[36mDo you want to mount an USB-Disk on boot? [Y/n]\033[0m'
 read usbdiskdecision
 
@@ -143,17 +152,19 @@ else
     echo 'Invalid input!'
 fi
 
-# enable dayli reboot
+# enable weekly reboot
 echo 'Step 6:'
-echo 'Raspberry jeden Tag um 03:15 Uhr neustarten'
-echo 'Enable automatic reboot at 3:15 am'
-echo -n -e '\033[7mSoll der RaspberryPi jeden Tag um 03:15 Uhr automatisch neu starten? [J/n]\033[0m'
-echo -n -e '\033[36mDo you want to set automatic restart at 03:15 am every day? [Y/n]\033[0m'
+echo 'Raspberry jeden Sonntag um 03:15 Uhr neustarten'
+echo 'Enable automatic reboot every sunday at 3:15 am'
+echo ''
+echo -n -e '\033[7mSoll der RaspberryPi jeden Sonntag um 03:15 Uhr automatisch neu starten? [J/n]\033[0m'
+echo ''
+echo -n -e '\033[36mDo you want to set automatic restart every sunday at 03:15 am every day? [Y/n]\033[0m'
 read cronbootdecision
 
 if [[ $cronbootdecision =~ (J|j|Y|y) ]]
   then
-sudo echo "*/15 3 * * *   root     shutdown -r now" >> /etc/crontab
+sudo echo "*/15 3 * * 0   root     shutdown -r now" >> /etc/crontab
 elif [[ $cronbootdecision =~ (n) ]]
   then
     echo 'Es wurde nichts verändert'
