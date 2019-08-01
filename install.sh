@@ -99,6 +99,12 @@ echo "" >> /boot/config.txt
 echo "# activating the hardware watchdog" >> /boot/config.txt
 echo "dtparam=watchdog=on" >> /boot/config.txt
 
+echo "Disable search for SD after USB boot"
+echo "========================"
+echo "" >> /boot/config.txt
+echo "# stopp searching for SD-Card after boot" >> /boot/config.txt
+echo "dtoverlay=sdtweak,poll_once" >> /boot/config.txt
+
 # enable additional admin programs
 echo 'Step 4: Optionales Admin Programm'
 echo 'Installation of optional Raspberry-Config UI: Webmin (recommend)'
@@ -154,8 +160,8 @@ fi
 
 # enable weekly reboot
 echo 'Step 6:'
-echo 'Raspberry jeden Sonntag um 03:15 Uhr neustarten'
-echo 'Enable automatic reboot every sunday at 3:15 am'
+echo 'Raspberry jeden Sonntag um 03:15 Uhr neustarten (nicht wirklich notwendig)'
+echo 'Enable automatic reboot every sunday at 3:15 am (n)'
 echo ''
 echo -n -e '\033[7mSoll der RaspberryPi jeden Sonntag um 03:15 Uhr automatisch neu starten? [J/n]\033[0m'
 echo ''
@@ -165,7 +171,7 @@ read cronbootdecision
 if [[ $cronbootdecision =~ (J|j|Y|y) ]]
   then
 sudo echo "*/15 3 * * 0   root     shutdown -r now" >> /etc/crontab
-elif [[ $cronbootdecision =~ (n) ]]
+elif [[ $cronbootdecision =~ (N|n) ]]
   then
     echo 'Es wurde nichts verändert'
     echo -e '\033[36mNo modifications was made\033[0m'
