@@ -66,6 +66,10 @@ echo 'Step 2:'
 echo -e '\033[5mShinobi installieren\033[0m'
 echo "=========================="
 echo ''
+echo 'choose Ubuntu touchless'
+echo ''
+sleep 3
+
 cd /tmp
 bash <(curl -s https://gitlab.com/Shinobi-Systems/Shinobi-Installer/raw/master/shinobi-install.sh)
 
@@ -161,7 +165,6 @@ sudo mount -a
 sudo chmod -R 777 /media/nvr
 sudo sed -i 's/second/USB-HDD/' /home/Shinobi/conf.json
 sudo sed -i 's!__DIR__/videos2!/media/nvr!' /home/Shinobi/conf.json
-sudo sed -i 's/change_this_to_something_very_random__just_anything_other_than_this/Change-this-please-to_something_very_random/' /home/Shinobi/conf.json
 elif [[ $usbdiskdecision =~ (n) ]]
   then
     echo 'Es wurde nichts verändert'
