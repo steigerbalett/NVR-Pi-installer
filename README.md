@@ -11,9 +11,13 @@ wget https://raw.githubusercontent.com/steigerbalett/NVR-Pi-installer/master/ins
 
 sudo bash install.sh
 
+
 After installation & reboot you can access Shinobi at your RaspberryPi IP http://nvrpi:8080
 
 Add an new User to Shinobi:
+
 http://nvrpi:8080/super
+
 Username : admin@shinobi.video
+
 Password : admin
