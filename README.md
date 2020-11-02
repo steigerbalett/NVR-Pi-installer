@@ -11,4 +11,4 @@ wget https://raw.githubusercontent.com/steigerbalett/NVR-Pi-installer/master/ins
 
 sudo bash install.sh
 
-After installation & reboot you can access Shinobi at your RaspberryPi IP http://x.x.x.x
+After installation & reboot you can access Shinobi at your RaspberryPi IP http://nvrpi:8080
