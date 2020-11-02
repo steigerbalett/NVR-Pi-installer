@@ -148,8 +148,8 @@ fi
 
 # enable USB-Drive autostart
 echo 'Step 5:'
-echo 'USB-Festplatte automatisch mounten'
-echo 'Enable automatic mount of an USB-HDD (recommend)'
+echo 'USB-Festplatte automatisch mounten. Bitte vorher in exFAT formatieren und anschließen'
+echo 'Enable automatic mount of an exFAT USB-HDD (recommend)'
 echo ''
 echo -n -e '\033[7mMöchten Sie; dass eine per USB angeschlossene Festplatte automatisch eingebunden wird? (empfohlen) [J/n]\033[0m'
 echo ''
@@ -158,7 +158,7 @@ read usbdiskdecision
 
 if [[ $usbdiskdecision =~ (J|j|Y|y) ]]
   then
-sudo echo "/dev/sda1    /media/nvr   ntfs    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
+sudo echo "/dev/sda1    /media/nvr   exfat    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
 sudo mkdir /media/nvr
 sudo mkdir /media/nvr/sample
 sudo mount -a
