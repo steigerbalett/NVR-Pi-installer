@@ -29,7 +29,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2019-05-22\033[0m"
+echo -e "\033[1;31mVERSION: 2020-11-02\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 sleep 3
 
@@ -49,6 +49,18 @@ apt -y full-upgrade
 apt -y install ntfs-3g hdparm hfsutils hfsprogs exfat-fuse git ntpdate proftpd samba
 echo "updating date and time"
 sudo ntpdate -u de.pool.ntp.org 
+
+# Einstellen der Zeitzone und Zeitsynchronisierung per Internet: Berlin
+sudo timedatectl set-timezone Europe/Berlin
+sudo timedatectl set-ntp true
+
+# Konfigurieren der lokale Sprache: deutsch 
+sudo sed -i -e 's/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/' /etc/locale.gen 
+sudo locale-gen 
+sudo localectl set-locale LANG=de_DE.UTF-8 LANGUAGE=de_DE
+
+# Hostname setzen
+hostnamectl set-hostname nvrpi
 
 echo 'Step 2:' 
 echo -e '\033[5mShinobi installieren\033[0m'
