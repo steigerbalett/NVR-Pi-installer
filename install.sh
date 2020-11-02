@@ -60,7 +60,7 @@ sudo locale-gen
 sudo localectl set-locale LANG=de_DE.UTF-8 LANGUAGE=de_DE
 
 # Hostname setzen
-hostnamectl set-hostname nvrpi
+sudo hostnamectl set-hostname nvrpi
 
 echo 'Step 2:' 
 echo -e '\033[5mShinobi installieren\033[0m'
