@@ -29,7 +29,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2020-11-02\033[0m"
+echo -e "\033[1;31mVERSION: 2020-12-30\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 sleep 3
 
@@ -148,17 +148,17 @@ fi
 
 # enable USB-Drive autostart
 echo 'Step 5:'
-echo 'USB-Festplatte automatisch mounten. Bitte vorher in exFAT formatieren und anschließen'
-echo 'Enable automatic mount of an exFAT USB-HDD (recommend)'
+echo 'USB-Festplatte automatisch nutzen. Bitte vorher die USB-Festplatte in exFAT formatieren, mit Label "NVR" versehen und vor der Installation anschließen'
+echo 'Enable automatic use of an exFAT NVR labled USB-HDD as storage(recommend)'
 echo ''
-echo -n -e '\033[7mMöchten Sie; dass eine per USB angeschlossene Festplatte automatisch eingebunden wird? (empfohlen) [J/n]\033[0m'
+echo -n -e '\033[7mMöchten Sie; dass eine per USB angeschlossene "NVR" Festplatte automatisch benutzt wird? (empfohlen) [J/n]\033[0m'
 echo ''
-echo -n -e '\033[36mDo you want to mount an USB-Disk on boot? [Y/n]\033[0m'
+echo -n -e '\033[36mDo you want to use "NVR" USB-Disk as storage? [Y/n]\033[0m'
 read usbdiskdecision
 
 if [[ $usbdiskdecision =~ (J|j|Y|y) ]]
   then
-sudo echo "/dev/sda1    /media/nvr   exfat    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
+#sudo echo "/dev/sda1    /media/nvr   exfat    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
 sudo mkdir /media/nvr
 sudo mkdir /media/nvr/sample
 sudo mount -a
