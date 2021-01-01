@@ -18,7 +18,7 @@ sudo bash install.sh
 Use (1) Ubuntu touchless install if asked.
 
 
-If you want to add a USB-HDD, please format it as exFat an attache it to the raspberry befor installation.
+If you want to add a USB-HDD, please format it as exFat, lable it NVR and attache it to the raspberry befor installation.
 
 
 
