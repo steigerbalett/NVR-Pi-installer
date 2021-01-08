@@ -158,7 +158,7 @@ read usbdiskdecision
 
 if [[ $usbdiskdecision =~ (J|j|Y|y) ]]
   then
-#sudo echo "/dev/sda1    /media/nvr   exfat    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
+sudo echo "LABEL=NVR    /media/nvr   auto    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
 sudo mkdir /media/nvr
 sudo mkdir /media/nvr/sample
 sudo mount -a
