@@ -3,7 +3,7 @@ Installscript for [Shinobi](https://shinobi.video/)
 
 NVR-Pi-install script
 
-Installscript for Shinobi NVR on RaspberryPi ([with Raspberry Pi OS 10 Lite](https://www.raspberrypi.org/software/operating-systems/))
+Installscript for Shinobi NVR on RaspberryPi ([with Raspberry Pi OS 10 Lite](https://downloads.raspberrypi.org/raspios_lite_armhf_latest))
 
 ###############
 
