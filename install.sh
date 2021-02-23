@@ -145,9 +145,29 @@ elif [[ $webmindecision =~ (n) ]]
 else
     echo 'Invalid input!'
 fi
+echo 'Step 5: Optionaler Dateiexplorer'
+echo ''
+echo 'Installation of optional Raspberry-Filemanager: Midnight Commander (recommend)'
+echo 'https://www.linode.com/docs/guides/how-to-install-midnight-commander/'
+echo ''
+echo -n -e '\033[7mMöchten Sie Midnight Commander installieren (empfohlen) [J/n]\033[0m'
+echo ''
+echo -n -e '\033[36mDo you want to install Midnight Commander [Y/n]\033[0m'
+read mcdecision
+
+if [[ $mcdecision =~ (J|j|Y|y) ]]
+  then
+sudo apt install mc -y
+elif [[ $mcdecision =~ (n) ]]
+  then
+    echo 'Es wurde nichts verändert'
+    echo -e '\033[36mNo modifications was made\033[0m'
+else
+    echo 'Invalid input!'
+fi
 
 # enable USB-Drive autostart
-echo 'Step 5:'
+echo 'Step 6:'
 echo 'USB-Festplatte automatisch nutzen. Bitte vorher die USB-Festplatte in exFAT formatieren, mit Label "NVR" versehen und vor der Installation anschließen'
 echo 'Enable automatic use of an exFAT NVR labled USB-HDD as storage(recommend)'
 echo ''
@@ -174,7 +194,7 @@ else
 fi
 
 # enable weekly reboot
-echo 'Step 6:'
+echo 'Step 7:'
 echo 'Raspberry jeden Sonntag um 03:15 Uhr neustarten (nicht wirklich notwendig)'
 echo 'Enable automatic reboot every sunday at 3:15 am (n)'
 echo ''
@@ -197,15 +217,28 @@ fi
 echo 'Auf Ihrem Raspberry wurde Shinobi installiert'
 echo 'https://raw.githubusercontent.com/steigerbalett/NVR-Pi-install/master/rpi-install.sh'
 echo ''
+echo ''
 echo -e "\033[36mAccess Shinobi: http://`hostname -I`:8080\033[0m"
+echo ''
 echo -e "\033[36mAccess the Raspi-Config-UI Webmin at: http\033[42ms\033[0m\033[1;31m://`hostname -I`:10000\033[0m"
+echo ''
 echo -e "\033[36mwith user: pi and your password (raspberry)\033[0m"
 echo ''
+echo -e "\033[1;31mYou could start Midnight Commander by typing: mc\033[0m"
+echo ''
+echo ''
+echo ''
 echo -e "\033[1;31mLegen Sie einen neuen Benutzer an unter: http://`hostname -I`:8080/super User: admin@shinobi.video Passwort: admin\033[0m"
+echo ''
 echo -e "\033[1;31mLoggen Sie sich dann bei Shinobi ein unter: http://`hostname -I`:8080\033[0m"
 echo ''
 echo -e "\033[1;31mLoggen Sie sich in die Raspi-Config-UI Webmin ein: http\033[42ms\033[0m\033[1;31m://`hostname -I`:10000\033[0m"
+echo ''
 echo -e "\033[1;31mMit Ihrem Benutzer: pi  und Passwort: (raspberry)\033[0m"
+echo ''
+echo -e "\033[1;31mMidnight Commander kann einfach gestartet werden mit: mc\033[0m"
+echo ''
+echo ''
 echo ''
 # reboot the raspi
 echo -e '\033[7mSoll der RaspberryPi jetzt automatisch neu starten?\033[0m'
