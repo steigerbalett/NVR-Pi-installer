@@ -6,13 +6,13 @@ NVR-Pi-install script
 Installscript for Shinobi NVR on RaspberryPi ([with Raspberry Pi OS 10 Lite](https://downloads.raspberrypi.org/raspios_lite_armhf_latest))
 
 ###############
-
+```
 cd /tmp
 
 wget https://raw.githubusercontent.com/steigerbalett/NVR-Pi-installer/master/install.sh
 
 sudo bash install.sh
-
+```
 ###############
 
 Use (1) Ubuntu touchless install if asked.
