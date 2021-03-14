@@ -29,7 +29,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2020-12-30\033[0m"
+echo -e "\033[1;31mVERSION: 2021-03-14\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 sleep 3
 
@@ -59,14 +59,43 @@ sudo sed -i -e 's/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/' /etc/locale.gen
 sudo locale-gen 
 sudo localectl set-locale LANG=de_DE.UTF-8 LANGUAGE=de_DE
 
-# Hostname setzen
-sudo hostnamectl set-hostname nvrpi
-
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 echo 'Step 2:' 
 echo -e '\033[5mShinobi installieren\033[0m'
 echo "=========================="
 echo ''
-echo 'choose Ubuntu touchless'
+echo 'Empfohlene Auswahl:'
+echo ''
+echo 'if asked, choose:'
+echo 'Development branch: No [n]'
+echo ''
+echo '1. Ubuntu - Fast and Touchless [1]'
+echo ''
+echo 'disable ipv6: No [n]'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 echo ''
 sleep 3
 
@@ -128,6 +157,16 @@ echo ''
 echo -n -e '\033[7mMöchten Sie Webmin installieren (empfohlen) [J/n]\033[0m'
 echo ''
 echo -n -e '\033[36mDo you want to install Webmin [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 read webmindecision
 
 if [[ $webmindecision =~ (J|j|Y|y) ]]
@@ -153,6 +192,16 @@ echo ''
 echo -n -e '\033[7mMöchten Sie Midnight Commander installieren (empfohlen) [J/n]\033[0m'
 echo ''
 echo -n -e '\033[36mDo you want to install Midnight Commander [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 read mcdecision
 
 if [[ $mcdecision =~ (J|j|Y|y) ]]
@@ -174,6 +223,16 @@ echo ''
 echo -n -e '\033[7mMöchten Sie; dass eine per USB angeschlossene "NVR" Festplatte automatisch benutzt wird? (empfohlen) [J/n]\033[0m'
 echo ''
 echo -n -e '\033[36mDo you want to use "NVR" USB-Disk as storage? [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 read usbdiskdecision
 
 if [[ $usbdiskdecision =~ (J|j|Y|y) ]]
@@ -201,6 +260,16 @@ echo ''
 echo -n -e '\033[7mSoll der RaspberryPi jeden Sonntag um 03:15 Uhr automatisch neu starten? [J/n]\033[0m'
 echo ''
 echo -n -e '\033[36mDo you want to set automatic restart every sunday at 03:15 am every day? [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 read cronbootdecision
 
 if [[ $cronbootdecision =~ (J|j|Y|y) ]]
@@ -213,6 +282,9 @@ elif [[ $cronbootdecision =~ (N|n) ]]
 else
     echo 'Invalid input!'
 fi
+
+# Hostname setzen
+sudo hostnamectl set-hostname nvrpi
 
 echo 'Auf Ihrem Raspberry wurde Shinobi installiert'
 echo 'https://raw.githubusercontent.com/steigerbalett/NVR-Pi-install/master/rpi-install.sh'
@@ -244,6 +316,16 @@ echo ''
 echo -e '\033[7mSoll der RaspberryPi jetzt automatisch neu starten?\033[0m'
 echo -e '\033[36mShould the the RaspberryPi now reboot directly or do you do this manually later?\033[0m'
 echo -n -e '\033[36mDo you want to reboot now [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 read rebootdecision
 
 if [[ $rebootdecision =~ (J|j|Y|y) ]]
@@ -258,5 +340,25 @@ elif [[ $rebootdecision =~ (n) ]]
 else
     echo 'Invalid input!'
 fi
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 echo 'Reboot the RaspberryPi now with: sudo reboot now'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 exit
