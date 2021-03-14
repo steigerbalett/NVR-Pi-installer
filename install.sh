@@ -29,7 +29,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2020-11-02\033[0m"
+echo -e "\033[1;31mVERSION: 2021-03-14\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 sleep 3
 
@@ -59,14 +59,43 @@ sudo sed -i -e 's/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/' /etc/locale.gen
 sudo locale-gen 
 sudo localectl set-locale LANG=de_DE.UTF-8 LANGUAGE=de_DE
 
-# Hostname setzen
-sudo hostnamectl set-hostname nvrpi
-
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 echo 'Step 2:' 
 echo -e '\033[5mShinobi installieren\033[0m'
 echo "=========================="
 echo ''
-echo 'choose Ubuntu touchless'
+echo 'Empfohlene Auswahl:'
+echo ''
+echo 'if asked, choose:'
+echo 'Development branch: No [n]'
+echo ''
+echo '1. Ubuntu - Fast and Touchless [1]'
+echo ''
+echo 'disable ipv6: No [n]'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 echo ''
 sleep 3
 
@@ -128,6 +157,16 @@ echo ''
 echo -n -e '\033[7mMöchten Sie Webmin installieren (empfohlen) [J/n]\033[0m'
 echo ''
 echo -n -e '\033[36mDo you want to install Webmin [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 read webmindecision
 
 if [[ $webmindecision =~ (J|j|Y|y) ]]
@@ -145,20 +184,60 @@ elif [[ $webmindecision =~ (n) ]]
 else
     echo 'Invalid input!'
 fi
+echo 'Step 5: Optionaler Dateiexplorer'
+echo ''
+echo 'Installation of optional Raspberry-Filemanager: Midnight Commander (recommend)'
+echo 'https://www.linode.com/docs/guides/how-to-install-midnight-commander/'
+echo ''
+echo -n -e '\033[7mMöchten Sie Midnight Commander installieren (empfohlen) [J/n]\033[0m'
+echo ''
+echo -n -e '\033[36mDo you want to install Midnight Commander [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+read mcdecision
+
+if [[ $mcdecision =~ (J|j|Y|y) ]]
+  then
+sudo apt install mc -y
+elif [[ $mcdecision =~ (n) ]]
+  then
+    echo 'Es wurde nichts verändert'
+    echo -e '\033[36mNo modifications was made\033[0m'
+else
+    echo 'Invalid input!'
+fi
 
 # enable USB-Drive autostart
-echo 'Step 5:'
-echo 'USB-Festplatte automatisch mounten. Bitte vorher in exFAT formatieren und anschließen'
-echo 'Enable automatic mount of an exFAT USB-HDD (recommend)'
+echo 'Step 6:'
+echo 'USB-Festplatte automatisch nutzen. Bitte vorher die USB-Festplatte in exFAT formatieren, mit Label "NVR" versehen und vor der Installation anschließen'
+echo 'Enable automatic use of an exFAT NVR labled USB-HDD as storage(recommend)'
 echo ''
-echo -n -e '\033[7mMöchten Sie; dass eine per USB angeschlossene Festplatte automatisch eingebunden wird? (empfohlen) [J/n]\033[0m'
+echo -n -e '\033[7mMöchten Sie; dass eine per USB angeschlossene "NVR" Festplatte automatisch benutzt wird? (empfohlen) [J/n]\033[0m'
 echo ''
-echo -n -e '\033[36mDo you want to mount an USB-Disk on boot? [Y/n]\033[0m'
+echo -n -e '\033[36mDo you want to use "NVR" USB-Disk as storage? [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 read usbdiskdecision
 
 if [[ $usbdiskdecision =~ (J|j|Y|y) ]]
   then
-sudo echo "/dev/sda1    /media/nvr   exfat    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
+sudo echo "LABEL=NVR    /media/nvr   auto    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
 sudo mkdir /media/nvr
 sudo mkdir /media/nvr/sample
 sudo mount -a
@@ -174,13 +253,23 @@ else
 fi
 
 # enable weekly reboot
-echo 'Step 6:'
+echo 'Step 7:'
 echo 'Raspberry jeden Sonntag um 03:15 Uhr neustarten (nicht wirklich notwendig)'
 echo 'Enable automatic reboot every sunday at 3:15 am (n)'
 echo ''
 echo -n -e '\033[7mSoll der RaspberryPi jeden Sonntag um 03:15 Uhr automatisch neu starten? [J/n]\033[0m'
 echo ''
 echo -n -e '\033[36mDo you want to set automatic restart every sunday at 03:15 am every day? [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 read cronbootdecision
 
 if [[ $cronbootdecision =~ (J|j|Y|y) ]]
@@ -194,23 +283,49 @@ else
     echo 'Invalid input!'
 fi
 
+# Hostname setzen
+sudo hostnamectl set-hostname nvrpi
+
 echo 'Auf Ihrem Raspberry wurde Shinobi installiert'
 echo 'https://raw.githubusercontent.com/steigerbalett/NVR-Pi-install/master/rpi-install.sh'
 echo ''
+echo ''
 echo -e "\033[36mAccess Shinobi: http://`hostname -I`:8080\033[0m"
+echo ''
 echo -e "\033[36mAccess the Raspi-Config-UI Webmin at: http\033[42ms\033[0m\033[1;31m://`hostname -I`:10000\033[0m"
+echo ''
 echo -e "\033[36mwith user: pi and your password (raspberry)\033[0m"
 echo ''
+echo -e "\033[1;31mYou could start Midnight Commander by typing: mc\033[0m"
+echo ''
+echo ''
+echo ''
 echo -e "\033[1;31mLegen Sie einen neuen Benutzer an unter: http://`hostname -I`:8080/super User: admin@shinobi.video Passwort: admin\033[0m"
+echo ''
 echo -e "\033[1;31mLoggen Sie sich dann bei Shinobi ein unter: http://`hostname -I`:8080\033[0m"
 echo ''
 echo -e "\033[1;31mLoggen Sie sich in die Raspi-Config-UI Webmin ein: http\033[42ms\033[0m\033[1;31m://`hostname -I`:10000\033[0m"
+echo ''
 echo -e "\033[1;31mMit Ihrem Benutzer: pi  und Passwort: (raspberry)\033[0m"
+echo ''
+echo -e "\033[1;31mMidnight Commander kann einfach gestartet werden mit: mc\033[0m"
+echo ''
+echo ''
 echo ''
 # reboot the raspi
 echo -e '\033[7mSoll der RaspberryPi jetzt automatisch neu starten?\033[0m'
 echo -e '\033[36mShould the the RaspberryPi now reboot directly or do you do this manually later?\033[0m'
 echo -n -e '\033[36mDo you want to reboot now [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 read rebootdecision
 
 if [[ $rebootdecision =~ (J|j|Y|y) ]]
@@ -225,5 +340,25 @@ elif [[ $rebootdecision =~ (n) ]]
 else
     echo 'Invalid input!'
 fi
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 echo 'Reboot the RaspberryPi now with: sudo reboot now'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
 exit

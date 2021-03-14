@@ -1,24 +1,24 @@
 # NVR-Pi-installer
-Installscript for Shinobi
+Installscript for [Shinobi](https://shinobi.video/)
 
 NVR-Pi-install script
 
-Installscript for Shinobi NVR on RaspberryPi (with RaspberryOS 10 lite)
+Installscript for Shinobi NVR on RaspberryPi ([with Raspberry Pi OS 10 Lite](https://downloads.raspberrypi.org/raspios_lite_armhf_latest))
 
 ###############
-
+```
 cd /tmp
 
 wget https://raw.githubusercontent.com/steigerbalett/NVR-Pi-installer/master/install.sh
 
 sudo bash install.sh
-
+```
 ###############
 
 Use (1) Ubuntu touchless install if asked.
 
 
-If you want to add a USB-HDD, please format it as exFat an attache it to the raspberry befor installation.
+If you want to add a USB-HDD, please format it as exFat, lable it NVR and attache it to the raspberry befor installation.
 
 
 
