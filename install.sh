@@ -29,7 +29,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2021-03-14\033[0m"
+echo -e "\033[1;31mVERSION: 2021-03-16\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 sleep 3
 
@@ -238,10 +238,6 @@ read usbdiskdecision
 if [[ $usbdiskdecision =~ (J|j|Y|y) ]]
   then
 sudo echo "LABEL=NVR    /media/nvr   auto    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
-sudo mkdir /media/nvr
-sudo mkdir /media/nvr/sample
-sudo mount -a
-sudo chmod -R 777 /media/nvr
 sudo sed -i 's/second/USB-HDD/' /home/Shinobi/conf.json
 sudo sed -i 's!__DIR__/videos2!/media/nvr!' /home/Shinobi/conf.json
 elif [[ $usbdiskdecision =~ (n) ]]
