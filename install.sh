@@ -218,7 +218,7 @@ fi
 # enable USB-Drive autostart
 echo 'Step 6:'
 echo 'USB-Festplatte automatisch nutzen. Bitte vorher die USB-Festplatte in exFAT formatieren, mit Label "NVR" versehen und vor der Installation anschließen'
-echo 'Enable automatic use of an exFAT NVR labled USB-HDD as storage(recommend)'
+echo 'Enable automatic use of an exFAT formated and with NVR labled USB-HDD as storage(recommend)'
 echo ''
 echo -n -e '\033[7mMöchten Sie; dass eine per USB angeschlossene "NVR" Festplatte automatisch benutzt wird? (empfohlen) [J/n]\033[0m'
 echo ''
@@ -237,7 +237,7 @@ read usbdiskdecision
 
 if [[ $usbdiskdecision =~ (J|j|Y|y) ]]
   then
-sudo echo "LABEL=NVR    /media/nvr   auto    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
+sudo echo "LABEL=NVR    /media/nvr   exfat    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
 sudo sed -i 's/second/USB-HDD/' /home/Shinobi/conf.json
 sudo sed -i 's!__DIR__/videos2!/media/nvr!' /home/Shinobi/conf.json
 elif [[ $usbdiskdecision =~ (n) ]]
