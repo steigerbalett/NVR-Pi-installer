@@ -29,7 +29,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2021-06-11\033[0m"
+echo -e "\033[1;31mVERSION: 2021-07-11\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 sleep 3
 
@@ -58,6 +58,10 @@ sudo timedatectl set-ntp true
 sudo sed -i -e 's/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/' /etc/locale.gen 
 sudo locale-gen 
 sudo localectl set-locale LANG=de_DE.UTF-8 LANGUAGE=de_DE
+
+# SSH dauerhaft aktivieren für Fernzugriff
+sudo systemctl enable ssh.service
+sudo systemctl start ssh.service
 
 echo ''
 echo ''
