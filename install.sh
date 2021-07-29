@@ -34,11 +34,55 @@ echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 sleep 3
 
 # Make sure script is run as root.
+echo ''
+echo 'Checking root status ...'
+echo ''
 if [ "$(id -u)" != "0" ]; then
     echo -e "\033[1;31mDas Script muss als root ausgeführt werden, sudo./install.sh\033[0m"
     echo -e '\033[36mMust be run as root with sudo! Try: sudo ./install.sh\033[0m'
   exit 1
 fi
+
+#Checking Memory Requirements
+echo ''
+echo 'Checking minimum system memory requirements ...'
+echo ''
+memtotal=$(cat /proc/meminfo | grep MemTotal | grep -o '[0-9]*')
+swaptotal=$(cat /proc/meminfo | grep SwapTotal | grep -o '[0-9]*')
+echo 'Your total system memory is $memtotal'
+echo 'Your total system swap is $swaptotal'
+totalmem=$(($memtotal + $swaptotal))
+echo 'Your effective total system memory is $totalmem'
+
+if [[ $totalmem -lt 900000 ]]
+  then
+    echo 'You have low memory'
+  else
+    echo 'You have enough memory to meet the requirements! :-)'
+fi
+    echo ''
+    echo -n 'Do you want to create a 1 G swap file? [Y/n] '
+    echo ''
+    read swapfiledecision
+      if [[ $swapfiledecision =~ (Y|y) ]]
+        then
+          echo 'Creating 1 G swap file...'
+            sudo fallocate -l 1G /swapfile
+            sudo chmod 600 /swapfile
+            sudo mkswap /swapfile
+            sudo swapon /swapfile
+            sudo cp /etc/fstab /etc/fstab.bak
+            echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab > /dev/null
+          echo '1 G swap file successfully created!'
+      elif [[ $swapfiledecision =~ (n) ]]
+        then
+          echo 'No swap file was created!'
+      else
+        echo Input error!
+        echo No swap file was created!
+        echo Please start again
+      fi
+
 
 echo 'Step 1:' 
 echo "Installing dependencies..."
