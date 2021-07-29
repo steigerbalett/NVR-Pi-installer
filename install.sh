@@ -29,7 +29,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2021-07-11\033[0m"
+echo -e "\033[1;31mVERSION: 2021-07-29\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 sleep 3
 
@@ -221,8 +221,35 @@ else
     echo 'Invalid input!'
 fi
 
+# enable weekly reboot
+echo 'Step 7:'
+echo 'RaspberryPi jeden Sonntag um 03:15 Uhr neustarten (nicht wirklich notwendig)'
+echo 'Enable automatic reboot every sunday at 3:15 am (n)'
+echo ''
+echo -n -e '\033[7mSoll der RaspberryPi jeden Sonntag um 03:15 Uhr automatisch neu starten? [J/n]\033[0m'
+echo ''
+echo -n -e '\033[36mDo you want to set automatic restart every sunday at 03:15 am every day? [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+read cronbootdecision
+
+if [[ $cronbootdecision =~ (J|j|Y|y) ]]
+  then
+sudo echo "*/15 3 * * 0   root     shutdown -r now" >> /etc/crontab
+elif [[ $cronbootdecision =~ (N|n) ]]
+  then
+    echo 'Es wurde nichts verändert'
+    echo -e '\033[36mNo modifications was made\033[0m'
+else
+    echo 'Invalid input!'
+fi
+
 # Hostname setzen
 sudo hostnamectl set-hostname nvrpi
+
 echo ''
 echo ''
 echo ''
