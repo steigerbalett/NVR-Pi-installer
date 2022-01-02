@@ -29,7 +29,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2021-07-29\033[0m"
+echo -e "\033[1;31mVERSION: 2022-01-02\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 sleep 3
 
@@ -90,7 +90,7 @@ echo "=========================="
 echo ''
 apt update
 apt -y full-upgrade
-apt -y install ntfs-3g hdparm hfsutils hfsprogs exfat-fuse git ntpdate proftpd samba
+apt -y install ntfs-3g hdparm hfsutils hfsprogs exfat-fuse git ntpdate proftpd samba wget build-essential
 echo "updating date and time"
 sudo ntpdate -u de.pool.ntp.org 
 
@@ -119,7 +119,7 @@ echo ''
 echo 'Empfohlene Auswahl:'
 echo ''
 echo 'if asked, choose:'
-echo 'Development branch: No [n]'
+echo 'Dashboard V3 [1]'
 echo ''
 echo '1. Ubuntu - Fast and Touchless [1]'
 echo ''
@@ -131,8 +131,98 @@ echo ''
 echo ''
 sleep 3
 
-cd /tmp
-bash <(curl -s https://gitlab.com/Shinobi-Systems/Shinobi-Installer/raw/master/shinobi-install.sh)
+#cd /tmp
+#bash <(curl -s https://gitlab.com/Shinobi-Systems/Shinobi-Installer/raw/master/shinobi-install.sh)
+
+#Node.ja V17.x
+sudo curl -fsSL https://deb.nodesource.com/setup_17.x | bash -
+sudo apt update
+sudo apt install -y nodejs
+sudo npm install npm@latest
+
+cd /home
+
+    theRepo=''
+    productName="Shinobi"
+    echo "Which branch do you want to install?"
+    echo "(1) New (V3 - needed for MQTT)"
+    echo "(2) Standard (V2)"
+    echo "(3) Beta"
+    read theBranchChoice
+    if [ "$theBranchChoice" = "3" ]; then
+        echo "Getting the Development Branch"
+        theBranch='dev'
+    elif [ "$theBranchChoice" = "2" ]; then
+        echo "Getting the Master Branch"
+        theBranch='master'
+    elif [ "$theBranchChoice" = "1" ]; then
+        echo "Getting the V3 Branch"
+        theBranch='dashboard-v3'
+    else
+    echo "Invalid input!"
+    fi
+        
+    # Download from Git repository
+    gitURL="https://gitlab.com/Shinobi-Systems/Shinobi$theRepo"
+    sudo git clone $gitURL.git -b $theBranch Shinobi
+    # Enter Shinobi folder "/home/Shinobi"
+    cd Shinobi
+    gitVersionNumber=$(git rev-parse HEAD)
+    theDateRightNow=$(date)
+    # write the version.json file for the main app to use
+    sudo touch version.json
+    sudo chmod 777 version.json
+    sudo echo '{"Product" : "'"$productName"'" , "Branch" : "'"$theBranch"'" , "Version" : "'"$gitVersionNumber"'" , "Date" : "'"$theDateRightNow"'" , "Repository" : "'"$gitURL"'"}' > version.json
+    echo "-------------------------------------"
+    echo "---------- Shinobi Systems ----------"
+    echo "Repository : $gitURL"
+    echo "Product : $productName"
+    echo "Branch : $theBranch"
+    echo "Version : $gitVersionNumber"
+    echo "Date : $theDateRightNow"
+    echo "-------------------------------------"
+    echo "-------------------------------------"
+    
+if [ ! -d "Shinobi" ]; then
+    echo "!-----------------------------------!"
+    echo "Shinobi downloaded."
+else
+    echo "!-----------------------------------!"
+    echo "Shinobi already downloaded."
+fi
+# start the installer in the main app (or start shinobi if already installed)
+echo "*-----------------------------------*"
+sudo chmod +x INSTALL/start.sh
+sudo INSTALL/start.sh
+
+echo 'MQTT for Shinobi'
+echo ''
+echo 'Installation of optional MQTT (recommend)'
+echo ''
+echo -n -e '\033[7mMöchten Sie MQTT aktivieren? [J/n]\033[0m'
+echo ''
+echo -n -e '\033[36mDo you want to activate MQTT? [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+echo ''
+echo ''
+read mqttdecision
+
+if [[ $mqttdecision =~ (J|j|Y|y) ]]
+  then
+# mqtt
+sudo curl -o ./libs/customAutoLoad/mqtt.js https://gitlab.com/geerd/shinobi-mqtt/raw/master/mqtt.js
+npm install mqtt
+node tools/modifyConfiguration.js addToConfig='{"mqttClient":true}'
+pm2 restart camera.js
+elif [[ $mqttdecision =~ (n) ]]
+  then
+    echo 'Es wurde nichts verändert'
+    echo -e '\033[36mNo modifications was made\033[0m'
+else
+    echo 'Invalid input!'
+fi
 
 echo 'Step 3:'
 echo "Tweaks"
@@ -211,6 +301,7 @@ elif [[ $webmindecision =~ (n) ]]
 else
     echo 'Invalid input!'
 fi
+
 echo 'Step 5: Optionaler Dateiexplorer'
 echo ''
 echo 'Installation of optional Raspberry-Filemanager: Midnight Commander (recommend)'
