@@ -141,7 +141,7 @@ sudo apt install -y nodejs
 sudo npm install npm@latest
 
 cd /home
-
+if [ ! -d "Shinobi" ]; then
     theRepo=''
     productName="Shinobi"
     echo "Which branch do you want to install?"
@@ -181,14 +181,10 @@ cd /home
     echo "Version : $gitVersionNumber"
     echo "Date : $theDateRightNow"
     echo "-------------------------------------"
-    echo "-------------------------------------"
-    
-if [ ! -d "Shinobi" ]; then
-    echo "!-----------------------------------!"
-    echo "Shinobi downloaded."
+    echo "-------------------------------------"  
 else
     echo "!-----------------------------------!"
-    echo "Shinobi already downloaded."
+    echo "Shinobi already downloaded. Please restart from scratch. Shinobi is restarting now ..."
 fi
 # start the installer in the main app (or start shinobi if already installed)
 echo "*-----------------------------------*"
