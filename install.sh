@@ -131,65 +131,18 @@ echo ''
 echo ''
 sleep 3
 
-#cd /tmp
-#bash <(curl -s https://gitlab.com/Shinobi-Systems/Shinobi-Installer/raw/master/shinobi-install.sh)
+curl -sSL https://get.docker.com | sh
+sudo usermod -aG docker pi
 
-#Node.js V12.x
-sudo curl -fsSL https://deb.nodesource.com/setup_12.x | bash -
-sudo apt update
-sudo apt install -y nodejs
-sudo npm install npm@latest
+sudo apt -y install libffi-dev libssl-dev
+sudo apt -y install python3-dev
+sudo apt -y install python3 python3-pip
 
-cd /home
-if [ ! -d "Shinobi" ]; then
-    theRepo=''
-    productName="Shinobi"
-    echo "Which branch do you want to install?"
-    echo "(1) New (V3 - needed for MQTT)"
-    echo "(2) Standard (V2)"
-    echo "(3) Beta"
-    read theBranchChoice
-    if [ "$theBranchChoice" = "3" ]; then
-        echo "Getting the Development Branch"
-        theBranch='dev'
-    elif [ "$theBranchChoice" = "2" ]; then
-        echo "Getting the Master Branch"
-        theBranch='master'
-    elif [ "$theBranchChoice" = "1" ]; then
-        echo "Getting the V3 Branch"
-        theBranch='dashboard-v3'
-    else
-    echo "Invalid input!"
-    fi
-        
-    # Download from Git repository
-    gitURL="https://gitlab.com/Shinobi-Systems/Shinobi$theRepo"
-    sudo git clone $gitURL.git -b $theBranch Shinobi
-    # Enter Shinobi folder "/home/Shinobi"
-    cd Shinobi
-    gitVersionNumber=$(git rev-parse HEAD)
-    theDateRightNow=$(date)
-    # write the version.json file for the main app to use
-    sudo touch version.json
-    sudo chmod 777 version.json
-    sudo echo '{"Product" : "'"$productName"'" , "Branch" : "'"$theBranch"'" , "Version" : "'"$gitVersionNumber"'" , "Date" : "'"$theDateRightNow"'" , "Repository" : "'"$gitURL"'"}' > version.json
-    echo "-------------------------------------"
-    echo "---------- Shinobi Systems ----------"
-    echo "Repository : $gitURL"
-    echo "Product : $productName"
-    echo "Branch : $theBranch"
-    echo "Version : $gitVersionNumber"
-    echo "Date : $theDateRightNow"
-    echo "-------------------------------------"
-    echo "-------------------------------------"  
-else
-    echo "!-----------------------------------!"
-    echo "Shinobi already downloaded. Please restart from scratch. Shinobi is restarting now ..."
-fi
-# start the installer in the main app (or start shinobi if already installed)
-echo "*-----------------------------------*"
-sudo chmod +x INSTALL/start.sh
-sudo INSTALL/start.sh
+sudo pip3 install docker-compose
+sudo systemctl enable docker
+
+bash <(curl -s https://gitlab.com/Shinobi-Systems/Shinobi-Installer/raw/master/shinobi-docker.sh)
+
 
 echo 'MQTT for Shinobi'
 echo ''
