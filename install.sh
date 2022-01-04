@@ -208,8 +208,7 @@ read mqttdecision
 if [[ $mqttdecision =~ (J|j|Y|y) ]]
   then
 # mqtt
-sudo curl -o ./libs/customAutoLoad/mqtt.js https://gitlab.com/geerd/shinobi-mqtt/raw/master/mqtt.js
-npm install mqtt
+sudo npm install mqtt
 node tools/modifyConfiguration.js addToConfig='{"mqttClient":true}'
 pm2 restart camera.js
 elif [[ $mqttdecision =~ (n) ]]
@@ -219,6 +218,8 @@ elif [[ $mqttdecision =~ (n) ]]
 else
     echo 'Invalid input!'
 fi
+# Fix npm
+sudo npm audit fix
 
 echo 'Step 3:'
 echo "Tweaks"
