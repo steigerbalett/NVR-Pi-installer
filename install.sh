@@ -134,8 +134,8 @@ sleep 3
 #cd /tmp
 #bash <(curl -s https://gitlab.com/Shinobi-Systems/Shinobi-Installer/raw/master/shinobi-install.sh)
 
-#Node.ja V17.x
-sudo curl -fsSL https://deb.nodesource.com/setup_17.x | bash -
+#Node.js V12.x
+sudo curl -fsSL https://deb.nodesource.com/setup_12.x | bash -
 sudo apt update
 sudo apt install -y nodejs
 sudo npm install npm@latest
