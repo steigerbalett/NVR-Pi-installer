@@ -1,8 +1,6 @@
 #!/bin/sh
-
 # Error out if anything fails.
 #set -e
-
 #License
 clear
 echo 'MIT License'
@@ -29,16 +27,70 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2021-07-29\033[0m"
+echo -e "\033[1;31mVERSION: 2022-01-20\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
+echo ''
+echo '
+███╗░░██╗██╗░░░██╗██████╗░░░░░░░██████╗░██╗
+████╗░██║██║░░░██║██╔══██╗░░░░░░██╔══██╗██║
+██╔██╗██║╚██╗░██╔╝██████╔╝█████╗██████╔╝██║
+██║╚████║░╚████╔╝░██╔══██╗╚════╝██╔═══╝░██║
+██║░╚███║░░╚██╔╝░░██║░░██║░░░░░░██║░░░░░██║
+╚═╝░░╚══╝░░░╚═╝░░░╚═╝░░╚═╝░░░░░░╚═╝░░░░░╚═╝
+'
+echo ''
 sleep 3
 
 # Make sure script is run as root.
+echo ''
+echo 'Checking root status ...'
+echo ''
 if [ "$(id -u)" != "0" ]; then
     echo -e "\033[1;31mDas Script muss als root ausgeführt werden, sudo./install.sh\033[0m"
     echo -e '\033[36mMust be run as root with sudo! Try: sudo ./install.sh\033[0m'
   exit 1
 fi
+
+# Checking Memory Requirements
+echo ''
+echo "Checking minimum system memory requirements ..."
+echo ''
+memtotal=$(cat /proc/meminfo | grep MemTotal | grep -o '[0-9]*')
+swaptotal=$(cat /proc/meminfo | grep SwapTotal | grep -o '[0-9]*')
+echo "Your total system memory is $memtotal"
+echo "Your total system swap is $swaptotal"
+totalmem=$(($memtotal + $swaptotal))
+echo "Your effective total system memory is $totalmem"
+
+if [[ $totalmem -lt 900000 ]]
+  then
+    echo 'You have low memory'
+  else
+    echo 'You have enough memory to meet the requirements! :-)'
+fi
+    echo ''
+    echo -n 'Do you want to create a 1 G swap file? [Y/n] '
+    echo ''
+    read swapfiledecision
+      if [[ $swapfiledecision =~ (Y|y) ]]
+        then
+          echo 'Creating 1 G swap file...'
+            sudo fallocate -l 1G /swapfile
+            sudo chmod 600 /swapfile
+            sudo mkswap /swapfile
+            sudo swapon /swapfile
+            sudo cp /etc/fstab /etc/fstab.bak
+            echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab > /dev/null
+          echo '1 G swap file successfully created!'
+      elif [[ $swapfiledecision =~ (n) ]]
+        then
+          echo 'No swap file was created!'
+      else
+        echo Input error!
+        echo No swap file was created!
+        echo Please start again
+      fi
+
 
 echo 'Step 1:' 
 echo "Installing dependencies..."
@@ -46,8 +98,8 @@ echo "=========================="
 echo ''
 apt update
 apt -y full-upgrade
-apt -y install ntfs-3g hdparm hfsutils hfsprogs exfat-fuse git ntpdate proftpd samba
-echo "updating date and time"
+apt -y install ntfs-3g hdparm hfsutils hfsprogs exfat-fuse git ntpdate proftpd samba wget build-essential
+echo "Updating date and time"
 sudo ntpdate -u de.pool.ntp.org 
 
 # Einstellen der Zeitzone und Zeitsynchronisierung per Internet: Berlin
@@ -66,16 +118,14 @@ sudo systemctl start ssh.service
 echo ''
 echo ''
 echo ''
-echo ''
-echo ''
 echo 'Step 2:' 
 echo -e '\033[5mShinobi installieren\033[0m'
 echo "=========================="
 echo ''
 echo 'Empfohlene Auswahl:'
 echo ''
-echo 'if asked, choose:'
-echo 'Development branch: No [n]'
+echo 'If asked, choose:'
+echo 'Install the Development branch? yes [y]'
 echo ''
 echo '1. Ubuntu - Fast and Touchless [1]'
 echo ''
@@ -83,12 +133,40 @@ echo 'disable ipv6: No [n]'
 echo ''
 echo ''
 echo ''
-echo ''
-echo ''
 sleep 3
 
 cd /tmp
 bash <(curl -s https://gitlab.com/Shinobi-Systems/Shinobi-Installer/raw/master/shinobi-install.sh)
+
+#MQTT
+echo 'MQTT for Shinobi'
+echo ''
+echo 'Installation of optional MQTT (recommend)'
+echo ''
+echo -n -e '\033[7mMöchten Sie MQTT aktivieren? [J/n]\033[0m'
+echo ''
+echo -n -e '\033[36mDo you want to activate MQTT? [Y/n]\033[0m'
+echo ''
+echo ''
+read mqttdecision
+
+if [[ $mqttdecision =~ (J|j|Y|y) ]]
+  then
+sudo npm install mqtt@4.2.8
+sudo node tools/modifyConfiguration.js addToConfig='{"mqttClient":true}'
+sudo git reset --hard
+sudo git checkout dashboard-v3
+sudo sh UPDATE.sh
+sudo pm2 restart camera.js
+elif [[ $mqttdecision =~ (n) ]]
+  then
+    echo 'Es wurde nichts verändert'
+    echo -e '\033[36mNo modifications was made\033[0m'
+else
+    echo 'Invalid input!'
+fi
+# Fix npm
+sudo npm audit fix
 
 echo 'Step 3:'
 echo "Tweaks"
@@ -138,15 +216,13 @@ echo "" >> /boot/config.txt
 echo "# stopp searching for SD-Card after boot" >> /boot/config.txt
 echo "dtoverlay=sdtweak,poll_once" >> /boot/config.txt
 
-# enable additional admin programs
+# Enable additional admin programs
 echo 'Step 4: Optionales Admin Programm'
 echo 'Installation of optional Raspberry-Config UI: Webmin (recommend)'
 echo ''
 echo -n -e '\033[7mMöchten Sie Webmin installieren (empfohlen) [J/n]\033[0m'
 echo ''
 echo -n -e '\033[36mDo you want to install Webmin [Y/n]\033[0m'
-echo ''
-echo ''
 echo ''
 echo ''
 echo ''
@@ -167,6 +243,7 @@ elif [[ $webmindecision =~ (n) ]]
 else
     echo 'Invalid input!'
 fi
+
 echo 'Step 5: Optionaler Dateiexplorer'
 echo ''
 echo 'Installation of optional Raspberry-Filemanager: Midnight Commander (recommend)'
@@ -193,7 +270,7 @@ else
     echo 'Invalid input!'
 fi
 
-# enable USB-Drive autostart
+# Enable USB-Drive autostart
 echo 'Step 6:'
 echo 'USB-Festplatte automatisch nutzen. Bitte vorher die USB-Festplatte in exFAT formatieren, mit Label "NVR" versehen und vor der Installation anschließen'
 echo 'Enable automatic use of an exFAT formated and with NVR labled USB-HDD as storage(recommend)'
@@ -221,16 +298,14 @@ else
     echo 'Invalid input!'
 fi
 
-# enable weekly reboot
+# Enable weekly reboot
 echo 'Step 7:'
-echo 'RaspberryPi jeden Sonntag um 03:15 Uhr neustarten (nicht wirklich notwendig)'
-echo 'Enable automatic reboot every sunday at 3:15 am (n)'
+echo 'RaspberryPi jeden Sonntag um 03:15 Uhr neustarten (J)'
+echo 'Enable automatic reboot every sunday at 3:15 am (y)'
 echo ''
 echo -n -e '\033[7mSoll der RaspberryPi jeden Sonntag um 03:15 Uhr automatisch neu starten? [J/n]\033[0m'
 echo ''
 echo -n -e '\033[36mDo you want to set automatic restart every sunday at 03:15 am every day? [Y/n]\033[0m'
-echo ''
-echo ''
 echo ''
 echo ''
 echo ''
