@@ -1,8 +1,6 @@
 #!/bin/sh
-
 # Error out if anything fails.
 #set -e
-
 #License
 clear
 echo 'MIT License'
@@ -29,8 +27,18 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2022-01-02\033[0m"
+echo -e "\033[1;31mVERSION: 2022-01-20\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
+echo ''
+echo '
+███╗░░██╗██╗░░░██╗██████╗░░░░░░░██████╗░██╗
+████╗░██║██║░░░██║██╔══██╗░░░░░░██╔══██╗██║
+██╔██╗██║╚██╗░██╔╝██████╔╝█████╗██████╔╝██║
+██║╚████║░╚████╔╝░██╔══██╗╚════╝██╔═══╝░██║
+██║░╚███║░░╚██╔╝░░██║░░██║░░░░░░██║░░░░░██║
+╚═╝░░╚══╝░░░╚═╝░░░╚═╝░░╚═╝░░░░░░╚═╝░░░░░╚═╝
+'
+echo ''
 sleep 3
 
 # Make sure script is run as root.
@@ -43,7 +51,7 @@ if [ "$(id -u)" != "0" ]; then
   exit 1
 fi
 
-#Checking Memory Requirements
+# Checking Memory Requirements
 echo ''
 echo "Checking minimum system memory requirements ..."
 echo ''
@@ -91,7 +99,7 @@ echo ''
 apt update
 apt -y full-upgrade
 apt -y install ntfs-3g hdparm hfsutils hfsprogs exfat-fuse git ntpdate proftpd samba wget build-essential
-echo "updating date and time"
+echo "Updating date and time"
 sudo ntpdate -u de.pool.ntp.org 
 
 # Einstellen der Zeitzone und Zeitsynchronisierung per Internet: Berlin
@@ -110,15 +118,13 @@ sudo systemctl start ssh.service
 echo ''
 echo ''
 echo ''
-echo ''
-echo ''
 echo 'Step 2:' 
 echo -e '\033[5mShinobi installieren\033[0m'
 echo "=========================="
 echo ''
 echo 'Empfohlene Auswahl:'
 echo ''
-echo 'if asked, choose:'
+echo 'If asked, choose:'
 echo 'Dashboard V3 [1]'
 echo ''
 echo '1. Ubuntu - Fast and Touchless [1]'
@@ -127,70 +133,12 @@ echo 'disable ipv6: No [n]'
 echo ''
 echo ''
 echo ''
-echo ''
-echo ''
 sleep 3
 
-#cd /tmp
-#bash <(curl -s https://gitlab.com/Shinobi-Systems/Shinobi-Installer/raw/master/shinobi-install.sh)
+cd /tmp
+bash <(curl -s https://gitlab.com/Shinobi-Systems/Shinobi-Installer/raw/master/shinobi-install.sh)
 
-#Node.js V17.x
-sudo curl -fsSL https://deb.nodesource.com/setup_17.x | bash -
-
-sudo apt install -y nodejs
-sudo npm install npm@latest
-
-cd /home
-if [ ! -d "Shinobi" ]; then
-    theRepo=''
-    productName="Shinobi"
-    echo "Which branch do you want to install?"
-    echo "(1) New (V3 - needed for MQTT)"
-    echo "(2) Standard (V2)"
-    echo "(3) Beta"
-    read theBranchChoice
-    if [ "$theBranchChoice" = "3" ]; then
-        echo "Getting the Development Branch"
-        theBranch='dev'
-    elif [ "$theBranchChoice" = "2" ]; then
-        echo "Getting the Master Branch"
-        theBranch='master'
-    elif [ "$theBranchChoice" = "1" ]; then
-        echo "Getting the V3 Branch"
-        theBranch='dashboard-v3'
-    else
-    echo "Invalid input!"
-    fi
-        
-    # Download from Git repository
-    gitURL="https://gitlab.com/Shinobi-Systems/Shinobi$theRepo"
-    sudo git clone $gitURL.git -b $theBranch Shinobi
-    # Enter Shinobi folder "/home/Shinobi"
-    cd Shinobi
-    gitVersionNumber=$(git rev-parse HEAD)
-    theDateRightNow=$(date)
-    # write the version.json file for the main app to use
-    sudo touch version.json
-    sudo chmod 777 version.json
-    sudo echo '{"Product" : "'"$productName"'" , "Branch" : "'"$theBranch"'" , "Version" : "'"$gitVersionNumber"'" , "Date" : "'"$theDateRightNow"'" , "Repository" : "'"$gitURL"'"}' > version.json
-    echo "-------------------------------------"
-    echo "---------- Shinobi Systems ----------"
-    echo "Repository : $gitURL"
-    echo "Product : $productName"
-    echo "Branch : $theBranch"
-    echo "Version : $gitVersionNumber"
-    echo "Date : $theDateRightNow"
-    echo "-------------------------------------"
-    echo "-------------------------------------"  
-else
-    echo "!-----------------------------------!"
-    echo "Shinobi already downloaded. Please restart from scratch. Shinobi is restarting now ..."
-fi
-# start the installer in the main app (or start shinobi if already installed)
-echo "*-----------------------------------*"
-sudo chmod +x INSTALL/start.sh
-sudo INSTALL/start.sh
-
+#MQTT
 echo 'MQTT for Shinobi'
 echo ''
 echo 'Installation of optional MQTT (recommend)'
@@ -200,17 +148,16 @@ echo ''
 echo -n -e '\033[36mDo you want to activate MQTT? [Y/n]\033[0m'
 echo ''
 echo ''
-echo ''
-echo ''
-echo ''
 read mqttdecision
 
 if [[ $mqttdecision =~ (J|j|Y|y) ]]
   then
-# mqtt
-sudo npm install mqtt
-node tools/modifyConfiguration.js addToConfig='{"mqttClient":true}'
-pm2 restart camera.js
+sudo npm install mqtt@4.2.8
+sudo node tools/modifyConfiguration.js addToConfig='{"mqttClient":true}'
+sudo git reset --hard
+sudo git checkout dashboard-v3
+sudo sh UPDATE.sh
+sudo pm2 restart camera.js
 elif [[ $mqttdecision =~ (n) ]]
   then
     echo 'Es wurde nichts verändert'
@@ -269,15 +216,13 @@ echo "" >> /boot/config.txt
 echo "# stopp searching for SD-Card after boot" >> /boot/config.txt
 echo "dtoverlay=sdtweak,poll_once" >> /boot/config.txt
 
-# enable additional admin programs
+# Enable additional admin programs
 echo 'Step 4: Optionales Admin Programm'
 echo 'Installation of optional Raspberry-Config UI: Webmin (recommend)'
 echo ''
 echo -n -e '\033[7mMöchten Sie Webmin installieren (empfohlen) [J/n]\033[0m'
 echo ''
 echo -n -e '\033[36mDo you want to install Webmin [Y/n]\033[0m'
-echo ''
-echo ''
 echo ''
 echo ''
 echo ''
@@ -325,7 +270,7 @@ else
     echo 'Invalid input!'
 fi
 
-# enable USB-Drive autostart
+# Enable USB-Drive autostart
 echo 'Step 6:'
 echo 'USB-Festplatte automatisch nutzen. Bitte vorher die USB-Festplatte in exFAT formatieren, mit Label "NVR" versehen und vor der Installation anschließen'
 echo 'Enable automatic use of an exFAT formated and with NVR labled USB-HDD as storage(recommend)'
@@ -353,16 +298,14 @@ else
     echo 'Invalid input!'
 fi
 
-# enable weekly reboot
+# Enable weekly reboot
 echo 'Step 7:'
-echo 'RaspberryPi jeden Sonntag um 03:15 Uhr neustarten (nicht wirklich notwendig)'
-echo 'Enable automatic reboot every sunday at 3:15 am (n)'
+echo 'RaspberryPi jeden Sonntag um 03:15 Uhr neustarten (J)'
+echo 'Enable automatic reboot every sunday at 3:15 am (y)'
 echo ''
 echo -n -e '\033[7mSoll der RaspberryPi jeden Sonntag um 03:15 Uhr automatisch neu starten? [J/n]\033[0m'
 echo ''
 echo -n -e '\033[36mDo you want to set automatic restart every sunday at 03:15 am every day? [Y/n]\033[0m'
-echo ''
-echo ''
 echo ''
 echo ''
 echo ''
