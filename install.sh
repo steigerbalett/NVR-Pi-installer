@@ -152,6 +152,7 @@ read mqttdecision
 
 if [[ $mqttdecision =~ (J|j|Y|y) ]]
   then
+cd /home/Shinobi
 sudo npm install mqtt@4.2.8
 sudo node tools/modifyConfiguration.js addToConfig='{"mqttClient":true}'
 sudo git reset --hard
