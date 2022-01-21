@@ -172,50 +172,69 @@ echo 'Step 3:'
 echo "Tweaks"
 echo "========================"
 echo ''
+echo "Decreasing GPU memory"
+echo "========================"
 if grep gpu_mem /boot/config.txt; then
   echo "Not changing GPU memory since it's already set"
 else
-  echo "Increasing GPU memory"
-  echo "========================"
-  echo "" >> /boot/config.txt
-  echo "# Increase GPU memory for better performance" >> /boot/config.txt
-  echo "gpu_mem=256" >> /boot/config.txt
+  echo "# Decrease GPU memory because its headless not needed" >> /boot/config.txt
+  echo "gpu_mem=265" >> /boot/config.txt
 fi
-
+echo ''
+echo "Turn off HDMI without connected Monitor"
+echo "========================"
 if grep hdmi_blanking=1 /boot/config.txt; then
   echo "HDMI tweak already set"
 else
-echo "Turn off HDMI without connected Monitor"
-echo "========================"
-echo ''
-echo "" >> /boot/config.txt
 echo "# Turn off HDMI without connected Monitor" >> /boot/config.txt
 echo "hdmi_blanking=1" >> /boot/config.txt
-echo "" >> /boot/config.txt
-echo "# disable HDMI audio" >> /boot/config.txt
+fi
+echo ''
+echo "Turn off HDMI audio"
+echo "========================"
+if grep hdmi_drive=1 /boot/config.txt; then
+  echo "HDMI audio tweak already set"
+else
+echo "# Turn off HDMI Audio" >> /boot/config.txt
 echo "hdmi_drive=1" >> /boot/config.txt
 fi
-
+echo ''
+if disable_splash=1 /boot/config.txt; then
+  echo "Disable Splashscreen already set"
+else
 echo "" >> /boot/config.txt
 echo "# disable the splash screen" >> /boot/config.txt
 echo "disable_splash=1" >> /boot/config.txt
+fi
+echo ''
+if grep disable_overscan=1 /boot/config.txt; then
+  echo "Disable overscan already set"
+else
 echo "" >> /boot/config.txt
 echo "# disable overscan" >> /boot/config.txt
 echo "disable_overscan=1" >> /boot/config.txt
-
+fi
+echo ''
 echo "Enable Hardware watchdog"
 echo "========================"
-echo ''
+if grep dtparam=watchdog=on /boot/config.txt; then
+  echo "Watchdog already set"
+else
 echo "" >> /boot/config.txt
 echo "# activating the hardware watchdog" >> /boot/config.txt
 echo "dtparam=watchdog=on" >> /boot/config.txt
-
+fi
+echo ''
 echo "Disable search for SD after USB boot"
 echo "========================"
+if grep dtoverlay=sdtweak,poll_once /boot/config.txt; then
+  echo "SD-Tweak already set"
+else
 echo "" >> /boot/config.txt
 echo "# stopp searching for SD-Card after boot" >> /boot/config.txt
 echo "dtoverlay=sdtweak,poll_once" >> /boot/config.txt
-
+fi
+echo ''
 # Enable additional admin programs
 echo 'Step 4: Optionales Admin Programm'
 echo 'Installation of optional Raspberry-Config UI: Webmin (recommend)'
