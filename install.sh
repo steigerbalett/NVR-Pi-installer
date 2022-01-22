@@ -27,7 +27,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2022-01-20\033[0m"
+echo -e "\033[1;31mVERSION: 2022-01-22\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 echo ''
 echo '
@@ -123,15 +123,12 @@ echo -e '\033[5mShinobi installieren\033[0m'
 echo "=========================="
 echo ''
 echo 'Empfohlene Auswahl:'
-echo ''
 echo 'If asked, choose:'
-echo 'Install the Development branch? yes [y]'
+echo '-> Install the Development branch? yes [y]'
+echo '-> 1. Ubuntu - Fast and Touchless [1]'
+echo '-> Disable ipv6: No [n]'
 echo ''
-echo '1. Ubuntu - Fast and Touchless [1]'
-echo ''
-echo 'disable ipv6: No [n]'
-echo ''
-echo ''
+echo "=========================="
 echo ''
 sleep 3
 
@@ -152,6 +149,7 @@ read mqttdecision
 
 if [[ $mqttdecision =~ (J|j|Y|y) ]]
   then
+cd /home/Shinobi
 sudo npm install mqtt@4.2.8
 sudo node tools/modifyConfiguration.js addToConfig='{"mqttClient":true}'
 sudo git reset --hard
@@ -172,50 +170,73 @@ echo 'Step 3:'
 echo "Tweaks"
 echo "========================"
 echo ''
+echo "Decreasing GPU memory"
+echo "========================"
 if grep gpu_mem /boot/config.txt; then
   echo "Not changing GPU memory since it's already set"
 else
-  echo "Increasing GPU memory"
-  echo "========================"
-  echo "" >> /boot/config.txt
-  echo "# Increase GPU memory for better performance" >> /boot/config.txt
-  echo "gpu_mem=256" >> /boot/config.txt
+  echo "# Decrease GPU memory because its headless not needed" >> /boot/config.txt
+  echo "gpu_mem=265" >> /boot/config.txt
 fi
-
+echo ''
+echo "Turn off HDMI without connected Monitor"
+echo "========================"
 if grep hdmi_blanking=1 /boot/config.txt; then
   echo "HDMI tweak already set"
 else
-echo "Turn off HDMI without connected Monitor"
-echo "========================"
-echo ''
-echo "" >> /boot/config.txt
 echo "# Turn off HDMI without connected Monitor" >> /boot/config.txt
 echo "hdmi_blanking=1" >> /boot/config.txt
-echo "" >> /boot/config.txt
-echo "# disable HDMI audio" >> /boot/config.txt
-echo "hdmi_drive=1" >> /boot/config.txt
 fi
-
+echo ''
+echo "Turn on HDMI audio"
+echo "========================"
+if grep hdmi_drive=2 /boot/config.txt; then
+  echo "HDMI audio tweak already set"
+else
+echo "# Turn on HDMI Audio" >> /boot/config.txt
+echo "hdmi_drive=2" >> /boot/config.txt
+fi
+echo ''
+echo "Turn off splashscreen"
+echo "========================"
+if disable_splash=1 /boot/config.txt; then
+  echo "Disable splashscreen already set"
+else
 echo "" >> /boot/config.txt
 echo "# disable the splash screen" >> /boot/config.txt
 echo "disable_splash=1" >> /boot/config.txt
+fi
+echo ''
+echo "Turn off overscan"
+echo "========================"
+if grep disable_overscan=1 /boot/config.txt; then
+  echo "Disable overscan already set"
+else
 echo "" >> /boot/config.txt
 echo "# disable overscan" >> /boot/config.txt
 echo "disable_overscan=1" >> /boot/config.txt
-
+fi
+echo ''
 echo "Enable Hardware watchdog"
 echo "========================"
-echo ''
+if grep dtparam=watchdog=on /boot/config.txt; then
+  echo "Watchdog already set"
+else
 echo "" >> /boot/config.txt
-echo "# activating the hardware watchdog" >> /boot/config.txt
+echo "# Activating the hardware watchdog" >> /boot/config.txt
 echo "dtparam=watchdog=on" >> /boot/config.txt
-
+fi
+echo ''
 echo "Disable search for SD after USB boot"
 echo "========================"
+if grep dtoverlay=sdtweak,poll_once /boot/config.txt; then
+  echo "SD-Tweak already set"
+else
 echo "" >> /boot/config.txt
-echo "# stopp searching for SD-Card after boot" >> /boot/config.txt
+echo "# Stop searching for SD-Card after boot" >> /boot/config.txt
 echo "dtoverlay=sdtweak,poll_once" >> /boot/config.txt
-
+fi
+echo ''
 # Enable additional admin programs
 echo 'Step 4: Optionales Admin Programm'
 echo 'Installation of optional Raspberry-Config UI: Webmin (recommend)'
