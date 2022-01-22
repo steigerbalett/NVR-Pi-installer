@@ -27,7 +27,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2022-01-20\033[0m"
+echo -e "\033[1;31mVERSION: 2022-01-22\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 echo ''
 echo '
@@ -123,15 +123,12 @@ echo -e '\033[5mShinobi installieren\033[0m'
 echo "=========================="
 echo ''
 echo 'Empfohlene Auswahl:'
-echo ''
 echo 'If asked, choose:'
-echo 'Install the Development branch? yes [y]'
+echo '-> Install the Development branch? yes [y]'
+echo '-> 1. Ubuntu - Fast and Touchless [1]'
+echo '-> Disable ipv6: No [n]'
 echo ''
-echo '1. Ubuntu - Fast and Touchless [1]'
-echo ''
-echo 'disable ipv6: No [n]'
-echo ''
-echo ''
+echo "=========================="
 echo ''
 sleep 3
 
@@ -191,23 +188,27 @@ echo "# Turn off HDMI without connected Monitor" >> /boot/config.txt
 echo "hdmi_blanking=1" >> /boot/config.txt
 fi
 echo ''
-echo "Turn off HDMI audio"
+echo "Turn on HDMI audio"
 echo "========================"
-if grep hdmi_drive=1 /boot/config.txt; then
+if grep hdmi_drive=2 /boot/config.txt; then
   echo "HDMI audio tweak already set"
 else
-echo "# Turn off HDMI Audio" >> /boot/config.txt
-echo "hdmi_drive=1" >> /boot/config.txt
+echo "# Turn on HDMI Audio" >> /boot/config.txt
+echo "hdmi_drive=2" >> /boot/config.txt
 fi
 echo ''
+echo "Turn off splashscreen"
+echo "========================"
 if disable_splash=1 /boot/config.txt; then
-  echo "Disable Splashscreen already set"
+  echo "Disable splashscreen already set"
 else
 echo "" >> /boot/config.txt
 echo "# disable the splash screen" >> /boot/config.txt
 echo "disable_splash=1" >> /boot/config.txt
 fi
 echo ''
+echo "Turn off overscan"
+echo "========================"
 if grep disable_overscan=1 /boot/config.txt; then
   echo "Disable overscan already set"
 else
@@ -222,7 +223,7 @@ if grep dtparam=watchdog=on /boot/config.txt; then
   echo "Watchdog already set"
 else
 echo "" >> /boot/config.txt
-echo "# activating the hardware watchdog" >> /boot/config.txt
+echo "# Activating the hardware watchdog" >> /boot/config.txt
 echo "dtparam=watchdog=on" >> /boot/config.txt
 fi
 echo ''
@@ -232,7 +233,7 @@ if grep dtoverlay=sdtweak,poll_once /boot/config.txt; then
   echo "SD-Tweak already set"
 else
 echo "" >> /boot/config.txt
-echo "# stopp searching for SD-Card after boot" >> /boot/config.txt
+echo "# Stop searching for SD-Card after boot" >> /boot/config.txt
 echo "dtoverlay=sdtweak,poll_once" >> /boot/config.txt
 fi
 echo ''
