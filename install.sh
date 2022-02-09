@@ -27,7 +27,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2022-01-22\033[0m"
+echo -e "\033[1;31mVERSION: 2022-02-09\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 echo ''
 echo '
@@ -237,6 +237,40 @@ echo "# Stop searching for SD-Card after boot" >> /boot/config.txt
 echo "dtoverlay=sdtweak,poll_once" >> /boot/config.txt
 fi
 echo ''
+
+# Samba Config
+echo 'Dateifreigabe aktivieren'
+echo 'Activation of Samba fileshare (recommend)'
+echo ''
+echo -n -e '\033[7mMöchten Sie die öffentliche (lesende) Netzwerk-Dateifreigabe aktivieren (empfohlen) [J/n]\033[0m'
+echo ''
+echo -n -e '\033[36mDo you want to activated readable open network fileaccess [Y/n]\033[0m'
+echo ''
+echo ''
+echo ''
+read sambadecision
+
+if [[ $sambadecision =~ (J|j|Y|y) ]]
+  then
+echo "" >> /etc/samba/smb.conf
+echo "[PiShare]" >> /etc/samba/smb.conf
+echo "comment=Pi Share" >> /etc/samba/smb.conf
+echo "path=/home/Shinobi/videos" >> /etc/samba/smb.conf
+echo "browseable=yes" >> /etc/samba/smb.conf
+echo "writeable=no" >> /etc/samba/smb.conf
+echo "only guest=no" >> /etc/samba/smb.conf
+echo "create mask=0740" >> /etc/samba/smb.conf
+echo "directory mask=0750" >> /etc/samba/smb.conf
+echo "public=yes" >> /etc/samba/smb.conf
+elif [[ $sambadecision =~ (n|N) ]]
+  then
+    echo 'Es wurde nichts verändert'
+    echo -e '\033[36mNo modifications was made\033[0m'
+else
+    echo 'Invalid input!'
+fi
+
+
 # Enable additional admin programs
 echo 'Step 4: Optionales Admin Programm'
 echo 'Installation of optional Raspberry-Config UI: Webmin (recommend)'
@@ -291,33 +325,33 @@ else
     echo 'Invalid input!'
 fi
 
-# Enable USB-Drive autostart
-echo 'Step 6:'
-echo 'USB-Festplatte automatisch nutzen. Bitte vorher die USB-Festplatte in exFAT formatieren, mit Label "NVR" versehen und vor der Installation anschließen'
-echo 'Enable automatic use of an exFAT formated and with NVR labled USB-HDD as storage(recommend)'
-echo ''
-echo -n -e '\033[7mMöchten Sie; dass eine per USB angeschlossene "NVR" Festplatte automatisch benutzt wird? (empfohlen) [J/n]\033[0m'
-echo ''
-echo -n -e '\033[36mDo you want to use "NVR" USB-Disk as storage? [Y/n]\033[0m'
-echo ''
-echo ''
-echo ''
-echo ''
-echo ''
-read usbdiskdecision
-
-if [[ $usbdiskdecision =~ (J|j|Y|y) ]]
-  then
-sudo echo "LABEL=NVR    /media/nvr   exfat    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
-sudo sed -i 's/second/USB-HDD/' /home/Shinobi/conf.json
-sudo sed -i 's!__DIR__/videos2!/media/nvr!' /home/Shinobi/conf.json
-elif [[ $usbdiskdecision =~ (n) ]]
-  then
-    echo 'Es wurde nichts verändert'
-    echo -e '\033[36mNo modifications was made\033[0m'
-else
-    echo 'Invalid input!'
-fi
+## Enable USB-Drive autostart
+#echo 'Step 6:'
+#echo 'USB-Festplatte automatisch nutzen. Bitte vorher die USB-Festplatte in exFAT formatieren, mit Label "NVR" versehen und vor der Installation anschließen'
+#echo 'Enable automatic use of an exFAT formated and with NVR labled USB-HDD as storage(recommend)'
+#echo ''
+#echo -n -e '\033[7mMöchten Sie; dass eine per USB angeschlossene "NVR" Festplatte automatisch benutzt wird? (empfohlen) [J/n]\033[0m'
+#echo ''
+#echo -n -e '\033[36mDo you want to use "NVR" USB-Disk as storage? [Y/n]\033[0m'
+#echo ''
+#echo ''
+#echo ''
+#echo ''
+#echo ''
+#read usbdiskdecision
+#
+#if [[ $usbdiskdecision =~ (J|j|Y|y) ]]
+#  then
+#sudo echo "LABEL=NVR    /media/nvr   exfat    uid=pi,gid=pi,auto,noatime,sync,users,rw,dev,exec,suid,nofail  0       1" >> /etc/fstab
+#sudo sed -i 's/second/USB-HDD/' /home/Shinobi/conf.json
+#sudo sed -i 's!__DIR__/videos2!/media/nvr!' /home/Shinobi/conf.json
+#elif [[ $usbdiskdecision =~ (n) ]]
+#  then
+#    echo 'Es wurde nichts verändert'
+#    echo -e '\033[36mNo modifications was made\033[0m'
+#else
+#    echo 'Invalid input!'
+#fi
 
 # Enable weekly reboot
 echo 'Step 7:'
