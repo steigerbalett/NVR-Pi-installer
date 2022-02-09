@@ -5,7 +5,7 @@ NVR-Pi-install script
 
 Installscript for Shinobi NVR on RaspberryPi ([with Raspberry Pi OS 11 Lite](https://downloads.raspberrypi.org/raspios_lite_armhf_latest))
 
-Recommandation:
+Recommendation: 
 RaspberryPi 4 with direct boot from attached USB-HHD (No SD-Card)
 
 ###############
@@ -40,7 +40,7 @@ NVR-Pi-install script
 
 Installationsscript für Shinobi NVR auf einem RaspberryPi ([with Raspberry Pi OS 11 Lite](https://downloads.raspberrypi.org/raspios_lite_armhf_latest))
 
-Emppfehlung:
+Emppfehlung: 
 RaspberryPi 4 mit Boot direkt von USB-Festplatte statt SD-Karte
 
 ###############
