@@ -27,7 +27,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2022-02-09\033[0m"
+echo -e "\033[1;31mVERSION: 2022-07-21\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 echo ''
 echo '
@@ -168,8 +168,11 @@ elif [[ $mqttdecision =~ (n) ]]
 else
     echo 'Invalid input!'
 fi
+# cleanup
 # Fix npm
 sudo npm audit fix
+# pm2 update
+sudo pm2 update
 
 echo 'Step 3:'
 echo "Tweaks"
