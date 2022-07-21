@@ -115,6 +115,11 @@ sudo localectl set-locale LANG=de_DE.UTF-8 LANGUAGE=de_DE
 sudo systemctl enable ssh.service
 sudo systemctl start ssh.service
 
+# Node V18 installieren
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install nodejs
+sudo npm install -g npm
+
 echo ''
 echo ''
 echo ''
