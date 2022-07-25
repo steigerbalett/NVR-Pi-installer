@@ -27,7 +27,7 @@ SOFTWARE.'
 echo ''
 echo 'Installation will continue in 3 seconds...'
 echo ''
-echo -e "\033[1;31mVERSION: 2022-07-21\033[0m"
+echo -e "\033[1;31mVERSION: 2022-07-25\033[0m"
 echo -e "\033[1;31mShinobi installer aka NVR-Pi\033[0m"
 echo ''
 echo '
@@ -69,19 +69,19 @@ if [[ $totalmem -lt 900000 ]]
     echo 'You have enough memory to meet the requirements! :-)'
 fi
     echo ''
-    echo -n 'Do you want to create a 1 G swap file? [Y/n] '
+    echo -n 'Do you want to create a 2 Gb swap file? [Y/n] '
     echo ''
     read swapfiledecision
       if [[ $swapfiledecision =~ (Y|y) ]]
         then
-          echo 'Creating 1 G swap file...'
-            sudo fallocate -l 1G /swapfile
+          echo 'Creating 2 Gb swap file...'
+            sudo fallocate -l 2G /swapfile
             sudo chmod 600 /swapfile
             sudo mkswap /swapfile
             sudo swapon /swapfile
             sudo cp /etc/fstab /etc/fstab.bak
             echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab > /dev/null
-          echo '1 G swap file successfully created!'
+          echo '2 Gb swap file successfully created!'
       elif [[ $swapfiledecision =~ (n) ]]
         then
           echo 'No swap file was created!'
@@ -116,9 +116,9 @@ sudo systemctl enable ssh.service
 sudo systemctl start ssh.service
 
 # Node V18 installieren
-#curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-#sudo apt install nodejs
-#sudo npm install -g npm
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install nodejs
+sudo npm install -g npm
 
 echo ''
 echo ''
@@ -178,12 +178,12 @@ echo 'Step 3:'
 echo "Tweaks"
 echo "========================"
 echo ''
-echo "Decreasing GPU memory"
+echo "Adjusting GPU memory"
 echo "========================"
 if grep gpu_mem /boot/config.txt; then
   echo "Not changing GPU memory since it's already set"
 else
-  echo "# Decrease GPU memory because its headless not needed" >> /boot/config.txt
+  echo "# Adjust GPU memory" >> /boot/config.txt
   echo "gpu_mem=265" >> /boot/config.txt
 fi
 echo ''
