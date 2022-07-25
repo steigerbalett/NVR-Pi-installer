@@ -3,7 +3,10 @@ Installscript for [Shinobi](https://shinobi.video/)
 
 NVR-Pi-install script
 
-Installscript for Shinobi NVR on RaspberryPi ([with Raspberry Pi OS 11 Lite](https://downloads.raspberrypi.org/raspios_lite_armhf_latest))
+Installscript for Shinobi NVR on RaspberryPi ([with Raspberry Pi OS 11 Lite x64](https://downloads.raspberrypi.org/raspios_lite_arm64_latest))
+
+Recommendation: 
+RaspberryPi 4 with direct boot from attached USB-HHD (No SD-Card)
 
 ###############
 ```
@@ -16,10 +19,6 @@ sudo bash install.sh
 ###############
 
 Use (1) Ubuntu touchless install if asked.
-
-
-If you want to add a USB-HDD, please format it as exFat, lable it NVR and attache it to the raspberry befor installation.
-
 
 
 After installation & reboot you can access Shinobi at your RaspberryPi IP http://nvrpi:8080
@@ -39,7 +38,10 @@ Installationsscript für die Network Video Recorder Software [Shinobi](https://s
 
 NVR-Pi-install script
 
-Installationsscript für Shinobi NVR auf einem RaspberryPi ([with Raspberry Pi OS 11 Lite](https://downloads.raspberrypi.org/raspios_lite_armhf_latest))
+Installationsscript für Shinobi NVR auf einem RaspberryPi ([with Raspberry Pi OS 11 Lite x64](https://downloads.raspberrypi.org/raspios_lite_arm64_latest))
+
+Empfehlung: 
+RaspberryPi 4 mit Boot direkt von USB-Festplatte statt SD-Karte
 
 ###############
 ```
@@ -52,9 +54,6 @@ sudo bash install.sh
 ###############
 
 Auswahl während der Installation: (1) Ubuntu touchless install
-
-Wenn eine externe USB-Festplatte zur genutzt werden soll:
-Vor der Insatallation eine Festplatte als exfat formatieren und mit NVR benennen.
 
 Nach der Installation und einem Reboot kann Shinobi auf dem RaspberryPi über die IP http://nvrpi:8080 geöffnet werden.
 
