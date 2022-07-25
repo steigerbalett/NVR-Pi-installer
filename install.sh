@@ -156,11 +156,11 @@ read mqttdecision
 if [[ $mqttdecision =~ (J|j|Y|y) ]]
   then
 cd /home/Shinobi
+sudo git reset --hard
+sudo git checkout dev
+sudo sh UPDATE.sh
 sudo npm install mqtt@4.2.8
 sudo node tools/modifyConfiguration.js addToConfig='{"mqttClient":true}'
-sudo git reset --hard
-sudo git checkout dashboard-v3
-sudo sh UPDATE.sh
 sudo pm2 restart camera.js
 elif [[ $mqttdecision =~ (n) ]]
   then
